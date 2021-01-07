@@ -5,7 +5,11 @@ template <class T>
 class List
 {
 private:
-    T* start;
+    struct elementPointer{
+        T* data;
+        elementPointer* next;
+    };
+    elementPointer* start;
 public:
     List<T>();
     ~List<T>();
