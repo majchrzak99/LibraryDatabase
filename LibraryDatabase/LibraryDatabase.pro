@@ -16,14 +16,25 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
+    Domain/Common/list.cpp \
+    bookform.cpp \
     main.cpp \
-    mainwindow.cpp
+    mainwindow.cpp \
+    userform.cpp
 
 HEADERS += \
-    mainwindow.h
+    Domain/Common/list.h \
+    Domain/Entities/book.h \
+    Domain/Entities/borrowing.h \
+    Domain/Entities/user.h \
+    bookform.h \
+    mainwindow.h \
+    userform.h
 
 FORMS += \
-    mainwindow.ui
+    bookform.ui \
+    mainwindow.ui \
+    userform.ui
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

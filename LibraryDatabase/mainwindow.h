@@ -15,6 +15,19 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
+private slots:
+    void on_DeleteBookBtn_clicked();
+
+    void on_DeleteUserBtn_clicked();
+
+    void on_AddBookBtn_clicked();
+
+    void on_AddUserBtn_clicked();
+
+    void on_EditUserBtn_clicked();
+
+    void on_EditBookBtn_clicked();
+
 private:
     Ui::MainWindow *ui;
 };

@@ -13,18 +13,18 @@
   <property name="windowTitle">
    <string>Biblioteka</string>
   </property>
-  <widget class="QWidget" name="BookGrid">
+  <widget class="QWidget" name="MainGrid">
    <widget class="QTabWidget" name="Tabs">
     <property name="geometry">
      <rect>
       <x>10</x>
       <y>10</y>
       <width>781</width>
-      <height>551</height>
+      <height>561</height>
      </rect>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="Borrowing">
      <attribute name="title">
@@ -33,9 +33,9 @@
      <widget class="QWidget" name="gridLayoutWidget_3">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>771</width>
+        <x>10</x>
+        <y>10</y>
+        <width>761</width>
         <height>521</height>
        </rect>
       </property>
@@ -80,9 +80,9 @@
      <widget class="QWidget" name="gridLayoutWidget_2">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>771</width>
+        <x>10</x>
+        <y>10</y>
+        <width>761</width>
         <height>521</height>
        </rect>
       </property>
@@ -100,9 +100,6 @@
           <string>Edytuj</string>
          </property>
         </widget>
-       </item>
-       <item row="0" column="0" colspan="4">
-        <widget class="QTableWidget" name="BookTable"/>
        </item>
        <item row="1" column="3">
         <widget class="QPushButton" name="AddBookBtn">
@@ -124,6 +121,9 @@
          </property>
         </spacer>
        </item>
+       <item row="0" column="0" colspan="4">
+        <widget class="QTableWidget" name="BookTable"/>
+       </item>
       </layout>
      </widget>
     </widget>
@@ -134,9 +134,9 @@
      <widget class="QWidget" name="gridLayoutWidget">
       <property name="geometry">
        <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>771</width>
+        <x>10</x>
+        <y>10</y>
+        <width>761</width>
         <height>521</height>
        </rect>
       </property>
@@ -193,7 +193,6 @@
     </rect>
    </property>
   </widget>
-  <widget class="QStatusBar" name="StatusBar"/>
  </widget>
  <resources/>
  <connections/>
