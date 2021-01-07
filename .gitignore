@@ -1,6 +1,9 @@
 # This file is used to ignore files which are generated
 # ----------------------------------------------------------------------------
 
+#qt build folders
+build-*/
+
 *~
 *.autosave
 *.a
@@ -70,4 +73,3 @@ Thumbs.db
 # --------
 *.dll
 *.exe
-
