@@ -47,13 +47,6 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="2">
-        <widget class="QPushButton" name="BorrowBookBtn">
-         <property name="text">
-          <string>Wypożycz</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="0">
         <spacer name="horizontalSpacer">
          <property name="orientation">
@@ -68,7 +61,14 @@
         </spacer>
        </item>
        <item row="0" column="0" colspan="3">
-        <widget class="QTableWidget" name="BorrowingTable"/>
+        <widget class="QTableView" name="BorrowingTable">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -87,24 +87,10 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="BookGridLayout">
-       <item row="1" column="0">
-        <widget class="QPushButton" name="DeleteBookBtn">
-         <property name="text">
-          <string>Usuń</string>
-         </property>
-        </widget>
-       </item>
        <item row="1" column="2">
         <widget class="QPushButton" name="EditBookBtn">
          <property name="text">
           <string>Edytuj</string>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="3">
-        <widget class="QPushButton" name="AddBookBtn">
-         <property name="text">
-          <string>Dodaj</string>
          </property>
         </widget>
        </item>
@@ -121,8 +107,39 @@
          </property>
         </spacer>
        </item>
-       <item row="0" column="0" colspan="4">
-        <widget class="QTableWidget" name="BookTable"/>
+       <item row="1" column="0">
+        <widget class="QPushButton" name="DeleteBookBtn">
+         <property name="text">
+          <string>Usuń</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="3">
+        <widget class="QPushButton" name="AddBookBtn">
+         <property name="text">
+          <string>Dodaj</string>
+         </property>
+        </widget>
+       </item>
+       <item row="1" column="4">
+        <widget class="QPushButton" name="BorrowBookBtn">
+         <property name="text">
+          <string>Wypożycz</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="5">
+        <widget class="QTableView" name="BookTable">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
+         </property>
+         <property name="sortingEnabled">
+          <bool>true</bool>
+         </property>
+        </widget>
        </item>
       </layout>
      </widget>
@@ -141,9 +158,6 @@
        </rect>
       </property>
       <layout class="QGridLayout" name="UserGridLayout">
-       <item row="0" column="0" colspan="5">
-        <widget class="QTableWidget" name="UserTable"/>
-       </item>
        <item row="1" column="3">
         <widget class="QPushButton" name="EditUserBtn">
          <property name="text">
@@ -175,6 +189,16 @@
         <widget class="QPushButton" name="DeleteUserBtn">
          <property name="text">
           <string>Usuń</string>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="5">
+        <widget class="QTableView" name="UserTable">
+         <property name="editTriggers">
+          <set>QAbstractItemView::NoEditTriggers</set>
+         </property>
+         <property name="selectionMode">
+          <enum>QAbstractItemView::SingleSelection</enum>
          </property>
         </widget>
        </item>

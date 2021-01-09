@@ -26,14 +26,38 @@ MainWindow::~MainWindow()
 /// REGION Books
 void MainWindow::on_AddBookBtn_clicked()
 {
+
     BookForm bookForm(this);
+    QObject::connect(&bookForm,&BookForm::bookAdded,this,&MainWindow::onBookAdded);
     bookForm.exec();
+
+    //Przykładowa obsługa listy
+//    Book book;
+//    book.Id = 1;
+//    book.Title = "test";
+//    book.Author = "Autor";
+//    book.IsbnNumber = "1234";
+//    book.PublishDate = "2020-01-20";
+//    book.PublishCountry = "PL";
+//    _books.Add(book);
+
+//    Book tmp = _books.FirstOrDefault([](Book x){return x.Id == 1;});
+
+//    _books.Remove(&book);
+
+    //Pobieranie wartości z textboxa
+
 }
 
 void MainWindow::on_EditBookBtn_clicked()
 {
     BookForm bookForm(this);
     bookForm.exec();
+}
+
+void MainWindow::onBookAdded(Book book)
+{
+    this->_books.Add(book);
 }
 
 void MainWindow::on_DeleteBookBtn_clicked()

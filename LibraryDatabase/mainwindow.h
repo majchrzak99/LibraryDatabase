@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include "Domain/Common/list.h"
+#include "Domain/Entities/book.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -28,7 +30,9 @@ private slots:
 
     void on_EditBookBtn_clicked();
 
+    void onBookAdded(Book book);
 private:
     Ui::MainWindow *ui;
+    List<Book> _books;
 };
 #endif // MAINWINDOW_H

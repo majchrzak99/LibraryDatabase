@@ -2,6 +2,7 @@
 #define BOOKFORM_H
 
 #include <QDialog>
+#include "Domain/Entities/book.h"
 
 namespace Ui {
 class BookForm;
@@ -15,6 +16,10 @@ public:
     explicit BookForm(QWidget *parent = nullptr);
     ~BookForm();
 
+private slots:
+    void on_SaveBtn_clicked();
+signals:
+    void bookAdded(Book book);
 private:
     Ui::BookForm *ui;
 };
