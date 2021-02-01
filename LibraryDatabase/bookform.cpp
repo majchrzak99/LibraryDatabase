@@ -21,6 +21,11 @@ void BookForm::on_SaveBtn_clicked()
     Book book;
     book.Title = this->ui->TitleLineEdit->text().toStdString();
     book.Author = this->ui->AuthorLineEdit->text().toStdString();
+    book.PublishDate = this->ui->PublishDateLineEdit->text().toStdString();
+    book.PublishCountry = this->ui->CountryPublishLineEdit->text().toStdString();
+    book.IsbnNumber = this->ui->IsbnNumberLineEdit->text().toStdString();
+
     emit bookAdded(book);
+    this->close();
 
 }
