@@ -12,6 +12,8 @@ public:
     std::string PublishDate;
     std::string PublishCountry;
     std::string IsbnNumber;
+
+
 };
 
 #endif
