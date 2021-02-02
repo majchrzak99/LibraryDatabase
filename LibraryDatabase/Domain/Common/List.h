@@ -1,7 +1,8 @@
 #ifndef LIST_H
 #define LIST_H
 
-template <class T> class List
+template <class T>
+class List
 {
 private:
     class elementPointer{

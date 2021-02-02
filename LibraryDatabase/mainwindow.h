@@ -30,13 +30,7 @@ private slots:
 
     void on_EditBookBtn_clicked();
 
-    void saveDataToFile(Book book);
-
-    void onBookChanged(Book book);
-
-    //void onBookAdded(Book book);
-
-
+    void onBookAdded(Book book);
 private:
     Ui::MainWindow *ui;
     List<Book> _books;
