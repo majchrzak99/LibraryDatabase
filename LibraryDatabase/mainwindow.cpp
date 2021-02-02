@@ -30,10 +30,7 @@ void MainWindow::on_AddBookBtn_clicked()
     BookForm bookForm(this);
     QObject::connect(&bookForm,&BookForm::bookAdded,this,&MainWindow::onBookAdded);
     bookForm.exec();
-    for(auto it = _books.begin(); it != _books.end(); it = it->next())
-    {
 
-    }
     //Przykładowa obsługa listy
 //    Book book;
 //    book.Id = 1;

@@ -5,24 +5,12 @@ template <class T>
 class List
 {
 private:
-    class elementPointer{
-    private:
+    struct elementPointer{
         T data;
-        elementPointer* nextElement;
-    public:
-        elementPointer* next(){
-            return this->nextElement;
-        }
+        elementPointer* next;
     };
     elementPointer* start;
-    elementPointer* back;
 public:
-    elementPointer* begin(){
-        return this->start;
-    }
-    elementPointer* end(){
-        return this->start;
-    }
     List()
     {
         this->start= nullptr;
@@ -30,7 +18,7 @@ public:
     ~List()
     {
         while(this->start != nullptr){
-            elementPointer* tmp = this->start->nextElement;
+            elementPointer* tmp = this->start->next;
             delete this->start;
             this->start = tmp;
         }
@@ -42,40 +30,39 @@ public:
         {
             this->start = new elementPointer;
             this->start->data = item;
-            this->start->nextElement = nullptr;
-            this->back = start;
+            this->start->next = nullptr;
         }
         else
         {
             elementPointer* p = this->start;
 
             //szukam ostatniego elementu
-            while(p->nextElement != nullptr)
+            while(p->next != nullptr)
             {
-                p = p->nextElement;
+                p = p->next;
             }
-            p->nextElement = new elementPointer();
+            p->next = new elementPointer();
             p->data = item;
-            p->nextElement = nullptr;
+            p->next = nullptr;
         }
     }
     void Remove(T* item)
     {
         //przeszukać listę i dla każdego elementu porównać referencję(adresy) z przkazanym parametrem
-        elementPointer** tmp = &(this->start);
+        elementPointer* tmp = this->start;
 
-        while(*tmp != nullptr)
+        while(tmp != nullptr)
         {
-            if(&((*tmp)->data) == item)
+            if(&(tmp->data) == item)
             {
-                elementPointer* t = (*tmp)->nextElement;
-                delete *tmp;
-                *tmp = &t;
+                elementPointer* tmp = this->start->next;
+                delete this->start;
+                this->start = tmp;
                 return;
             }
             else
             {
-                tmp = &(tmp->next);
+                tmp = tmp->next;
             }
         }
         return;
@@ -105,18 +92,13 @@ public:
             }
             else
             {
-                tmp = tmp->nextElement;
+                tmp = tmp->next;
             }
         }
 
         return nullptr;
         //koniec przeszukiwania
     }
-
-};
-template <class T>
-class List
-{
 
 };
 
