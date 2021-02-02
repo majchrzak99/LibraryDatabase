@@ -3,6 +3,7 @@
 #include "QMessageBox"
 #include "userform.h"
 #include "bookform.h"
+#include "QDebug"
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -32,18 +33,18 @@ void MainWindow::on_AddBookBtn_clicked()
     bookForm.exec();
 
     //Przykładowa obsługa listy
-//    Book book;
-//    book.Id = 1;
-//    book.Title = "test";
-//    book.Author = "Autor";
-//    book.IsbnNumber = "1234";
-//    book.PublishDate = "2020-01-20";
-//    book.PublishCountry = "PL";
-//    _books.Add(book);
+    //    Book book;
+    //    book.Id = 1;
+    //    book.Title = "test";
+    //    book.Author = "Autor";
+    //    book.IsbnNumber = "1234";
+    //    book.PublishDate = "2020-01-20";
+    //    book.PublishCountry = "PL";
+    //    _books.Add(book);
 
-//    Book tmp = _books.FirstOrDefault([](Book x){return x.Id == 1;});
+    //    Book tmp = _books.FirstOrDefault([](Book x){return x.Id == 1;});
 
-//    _books.Remove(&book);
+    //    _books.Remove(&book);
 
     //Pobieranie wartości z textboxa
 
@@ -58,6 +59,11 @@ void MainWindow::on_EditBookBtn_clicked()
 void MainWindow::onBookAdded(Book book)
 {
     this->_books.Add(book);
+    qDebug() << "test"<< "\n";
+    //qDebug() << "element: "<<(_books.begin() != _books.begin() ? "tak":"nie" )<< "\n";
+    for(List<Book>::iterator it = _books.begin();it != _books.end();++it){
+        qDebug() << "element: "<<it->Title.c_str() << "\n";
+    }
 }
 
 void MainWindow::on_DeleteBookBtn_clicked()
@@ -69,9 +75,9 @@ void MainWindow::on_DeleteBookBtn_clicked()
     int result = msgBox.exec();
     switch (result)
     {
-        case QMessageBox::Yes:
+    case QMessageBox::Yes:
         break;
-        case QMessageBox::No:
+    case QMessageBox::No:
         break;
     }
 
@@ -102,9 +108,9 @@ void MainWindow::on_DeleteUserBtn_clicked()
     int result = msgBox.exec();
     switch (result)
     {
-        case QMessageBox::Yes:
+    case QMessageBox::Yes:
         break;
-        case QMessageBox::No:
+    case QMessageBox::No:
         break;
     }
 }

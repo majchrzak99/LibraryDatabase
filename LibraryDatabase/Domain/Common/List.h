@@ -10,10 +10,43 @@ private:
         elementPointer* next;
     };
     elementPointer* start;
+    //elementPointer* back;
 public:
+    class iterator{
+    private:
+        elementPointer* pointer;
+    public:
+        iterator(elementPointer* pointer){
+            this->pointer = pointer;
+        };
+        bool operator == (iterator a){
+            return a.pointer == this->pointer;
+        }
+        bool operator != (iterator a){
+            return a.pointer != this->pointer;
+        }
+        T* operator->(){
+
+            return &(this->pointer->data);
+        }
+        void operator ++(){
+            this->pointer = this->pointer->next;
+            //            return iterator(this->pointer->next);
+        }
+    };
+    iterator begin(){
+        iterator it(this->start);
+        return it;
+    }
+    iterator end(){
+        iterator it(nullptr);
+        return it;
+    }
     List()
     {
         this->start= nullptr;
+
+        //this->back= new elementPointer();
     }
     ~List()
     {
@@ -22,6 +55,7 @@ public:
             delete this->start;
             this->start = tmp;
         }
+        //delete this->back;
     }
     void Add(T item)
     {
@@ -31,6 +65,7 @@ public:
             this->start = new elementPointer;
             this->start->data = item;
             this->start->next = nullptr;
+
         }
         else
         {
@@ -42,8 +77,8 @@ public:
                 p = p->next;
             }
             p->next = new elementPointer();
-            p->data = item;
-            p->next = nullptr;
+            p->next->data = item;
+            p->next->next = nullptr;
         }
     }
     void Remove(T* item)
@@ -51,7 +86,7 @@ public:
         //przeszukać listę i dla każdego elementu porównać referencję(adresy) z przkazanym parametrem
         elementPointer* tmp = this->start;
 
-        while(tmp != nullptr)
+        while(tmp != this->back)
         {
             if(&(tmp->data) == item)
             {
@@ -84,7 +119,7 @@ public:
     {
         //zacznij przeszukiwać listę
         elementPointer* tmp = this->start;
-        while(tmp != nullptr)
+        while(tmp != this->back)
         {
             if(predicate(tmp->data))
             {
