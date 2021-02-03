@@ -8,24 +8,38 @@
 #include <QStringList>
 #include <QDir>
 #include <QDebug>
+#include <QDialog>
+#include <QtCore>
+#include <QtGui>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    QStandardItemModel *model = new QStandardItemModel(5,5,this);
+    QStringList horzHeaders;
+    horzHeaders << "ID książki" << "Tytuł książki" << "Autor" << "Rok wydania" << "Kraj publikacji" << "Numer ISBN";
+    model->setHorizontalHeaderLabels(horzHeaders);
+    ui->BookTable->setModel(model);
 }
+
 
 MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+
 /// REGION Borrowings
 
 
 
 
 /// ENDREGION
+
+
+
 
 
 /// REGION Books
@@ -63,11 +77,12 @@ void MainWindow::on_EditBookBtn_clicked()
 void MainWindow::onBookChanged(Book book)
 {
     this->_books.Add(book);
-    qDebug() << "test"<< "\n";
     //qDebug() << "element: "<<(_books.begin() != _books.begin() ? "tak":"nie" )<< "\n";
-    for(List<Book>::iterator it = _books.begin();it != _books.end();++it){
+    for(List<Book>::iterator it = _books.begin();it != _books.end();++it)
+    {
         qDebug() << "element: "<<it->Title.c_str() << "\n";
     }
+
     if(book.Id == 0)
     {
         this->_books.Add(book);
@@ -86,8 +101,7 @@ void MainWindow::onBookChanged(Book book)
 
 void MainWindow::saveDataToFile(Book book)
 {
-
-    QString filename = "Data.csv";
+    QString filename = "data.csv";
     QFile file(filename);
     if (file.open(QIODevice::WriteOnly | QIODevice::Append))
     {
@@ -115,6 +129,9 @@ void MainWindow::on_DeleteBookBtn_clicked()
 }
 
 /// ENDREGION
+
+
+
 
 /// REGION User
 

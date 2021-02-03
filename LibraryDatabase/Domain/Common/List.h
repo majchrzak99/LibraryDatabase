@@ -119,7 +119,7 @@ public:
     {
         //zacznij przeszukiwać listę
         elementPointer* tmp = this->start;
-        while(tmp != this->back)
+        while(tmp != nullptr)
         {
             if(predicate(tmp->data))
             {
