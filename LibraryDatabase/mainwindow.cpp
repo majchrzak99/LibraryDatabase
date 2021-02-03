@@ -45,27 +45,9 @@ MainWindow::~MainWindow()
 /// REGION Books
 void MainWindow::on_AddBookBtn_clicked()
 {
-
     BookForm bookForm(this);
     QObject::connect(&bookForm,&BookForm::bookAdded,this,&MainWindow::onBookChanged);
     bookForm.exec();
-
-    //Przykładowa obsługa listy
-    //    Book book;
-    //    book.Id = 1;
-    //    book.Title = "test";
-    //    book.Author = "Autor";
-    //    book.IsbnNumber = "1234";
-    //    book.PublishDate = "2020-01-20";
-    //    book.PublishCountry = "PL";
-    //    _books.Add(book);
-
-    //    Book tmp = _books.FirstOrDefault([](Book x){return x.Id == 1;});
-
-    //    _books.Remove(&book);
-
-    //Pobieranie wartości z textboxa
-
 }
 
 void MainWindow::on_EditBookBtn_clicked()
@@ -77,11 +59,6 @@ void MainWindow::on_EditBookBtn_clicked()
 void MainWindow::onBookChanged(Book book)
 {
     this->_books.Add(book);
-    //qDebug() << "element: "<<(_books.begin() != _books.begin() ? "tak":"nie" )<< "\n";
-    for(List<Book>::iterator it = _books.begin();it != _books.end();++it)
-    {
-        qDebug() << "element: "<<it->Title.c_str() << "\n";
-    }
 
     if(book.Id == 0)
     {
@@ -105,8 +82,8 @@ void MainWindow::saveDataToFile(Book book)
     QFile file(filename);
     if (file.open(QIODevice::WriteOnly | QIODevice::Append))
     {
-       QTextStream stream(&file);
-       stream << QString::number(book.Id) <<","<< book.Title.c_str()<<"," << book.Author.c_str()<<"," << book.PublishDate.c_str()<<"," << book.PublishCountry.c_str()<<"," << book.IsbnNumber.c_str() << Qt::endl;
+        QTextStream stream(&file);
+        stream << QString::number(book.Id) <<","<< book.Title.c_str()<<"," << book.Author.c_str()<<"," << book.PublishDate.c_str()<<"," << book.PublishCountry.c_str()<<"," << book.IsbnNumber.c_str() << Qt::endl;
     }
 }
 
@@ -138,12 +115,16 @@ void MainWindow::on_DeleteBookBtn_clicked()
 void MainWindow::on_AddUserBtn_clicked()
 {
     UserForm userForm(this);
+    QObject::connect(&userForm,&UserForm::userChanged,this,&MainWindow::onUserChanged);
     userForm.exec();
 }
 
 void MainWindow::on_EditUserBtn_clicked()
 {
-    UserForm userForm(this);
+    //pobrać zaznaczoną encję i przekazać do konstruktora
+    User *tmp = this->_users.FirstOrDefault([&](User u){return true;});
+    UserForm userForm(this,*tmp);
+    QObject::connect(&userForm,&UserForm::userChanged,this,&MainWindow::onUserChanged);
     userForm.exec();
 }
 
@@ -153,14 +134,43 @@ void MainWindow::on_DeleteUserBtn_clicked()
     msgBox.setButtonText(QMessageBox::Yes,"Tak");
     msgBox.setButtonText(QMessageBox::No,"Nie");
 
+    User* userToDelete = _users.FirstOrDefault([&](User u){return  true;});
     int result = msgBox.exec();
     switch (result)
     {
     case QMessageBox::Yes:
+        _users.Remove(userToDelete);
         break;
     case QMessageBox::No:
         break;
     }
 }
+void MainWindow::onUserChanged(User user)
+{
+    if(user.Id == 0)
+    {
+        int max = 0;
+        for(List<User>::iterator it = _users.begin(); it != _users.end(); ++it){
+            if(it->Id > max)
+                max = it->Id + 1;
+        }
+        user.Id = max;
+        this->_users.Add(user);
+    }
+    else
+    {
+        User *tmp = this->_users.FirstOrDefault([&](User u){return u.Id == user.Id;});
+        if(tmp != nullptr){
+
+            tmp->Name = user.Name;
+            tmp->Pesel = user.Pesel;
+            tmp->Place = user.Place;
+            tmp->Street = user.Street;
+            tmp->Surname = user.Surname;
+            tmp->HouseFlatNo = user.HouseFlatNo;
+        }
+    }
+}
+
 
 /// ENDREGION
