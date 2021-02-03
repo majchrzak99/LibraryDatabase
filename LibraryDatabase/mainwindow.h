@@ -31,7 +31,7 @@ private slots:
 
     void on_EditBookBtn_clicked();
 
-    void saveDataToFile(Book book);
+    void saveDataToFile();
 
     void onBookChanged(Book book);
 
@@ -40,5 +40,6 @@ private:
     Ui::MainWindow *ui;
     List<Book> _books;
     List<User> _users;
+    void refreshUsersTable();
 };
 #endif // MAINWINDOW_H

@@ -7,6 +7,7 @@ class User
 {
 public:
     int Id = 0;
+    std::string sId(){return std::to_string(Id);};
     std::string Name;
     std::string Surname;
     std::string Pesel;

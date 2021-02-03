@@ -17,11 +17,12 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    QStandardItemModel *model = new QStandardItemModel(5,5,this);
-    QStringList horzHeaders;
-    horzHeaders << "ID książki" << "Tytuł książki" << "Autor" << "Rok wydania" << "Kraj publikacji" << "Numer ISBN";
-    model->setHorizontalHeaderLabels(horzHeaders);
-    ui->BookTable->setModel(model);
+    refreshUsersTable();
+    //    QStandardItemModel *model = new QStandardItemModel(5,5,this);
+    //    QStringList horzHeaders;
+    //    horzHeaders << "ID książki" << "Tytuł książki" << "Autor" << "Rok wydania" << "Kraj publikacji" << "Numer ISBN";
+    //    model->setHorizontalHeaderLabels(horzHeaders);
+    //    ui->BookTable->setModel(model);
 }
 
 
@@ -63,7 +64,7 @@ void MainWindow::onBookChanged(Book book)
     if(book.Id == 0)
     {
         this->_books.Add(book);
-        saveDataToFile(book);
+        //saveDataToFile(book);
     }
     else
     {
@@ -76,15 +77,17 @@ void MainWindow::onBookChanged(Book book)
     }
 }
 
-void MainWindow::saveDataToFile(Book book)
+void MainWindow::saveDataToFile()
 {
-    QString filename = "data.csv";
-    QFile file(filename);
-    if (file.open(QIODevice::WriteOnly | QIODevice::Append))
-    {
-        QTextStream stream(&file);
-        stream << QString::number(book.Id) <<","<< book.Title.c_str()<<"," << book.Author.c_str()<<"," << book.PublishDate.c_str()<<"," << book.PublishCountry.c_str()<<"," << book.IsbnNumber.c_str() << Qt::endl;
-    }
+
+    //   QString filename = "Data.csv";
+    //   QFile file(filename);
+    //   if (file.open(QIODevice::WriteOnly | QIODevice::Append))
+    //   {
+    //       QTextStream stream(&file);
+    //       stream << QString::number(book.Id) <<","<< book.Title.c_str()<<"," << book.Author.c_str()<<"," << book.PublishDate.c_str()<<"," << book.PublishCountry.c_str()<<"," << book.IsbnNumber.c_str() << Qt::endl;
+    //       file.close();
+    //   }
 }
 
 
@@ -134,12 +137,26 @@ void MainWindow::on_DeleteUserBtn_clicked()
     msgBox.setButtonText(QMessageBox::Yes,"Tak");
     msgBox.setButtonText(QMessageBox::No,"Nie");
 
-    User* userToDelete = _users.FirstOrDefault([&](User u){return  true;});
+    QItemSelectionModel *select = ui->UserTable->selectionModel();
+    int selectedId = 0;
+
+    if(select->hasSelection())
+    {
+        int rowidx = ui->UserTable->selectionModel()->currentIndex().row();
+
+        selectedId  = ui->UserTable->model()->data(ui->UserTable->model()->index(rowidx,0)).toInt();
+    }
+
+    User* userToDelete = _users.FirstOrDefault([&](User u){return  u.Id == selectedId;});
+
+    if(userToDelete == nullptr)
+        return;
     int result = msgBox.exec();
     switch (result)
     {
     case QMessageBox::Yes:
         _users.Remove(userToDelete);
+        refreshUsersTable();
         break;
     case QMessageBox::No:
         break;
@@ -149,9 +166,9 @@ void MainWindow::onUserChanged(User user)
 {
     if(user.Id == 0)
     {
-        int max = 0;
+        int max = 1;
         for(List<User>::iterator it = _users.begin(); it != _users.end(); ++it){
-            if(it->Id > max)
+            if(it->Id >= max)
                 max = it->Id + 1;
         }
         user.Id = max;
@@ -170,7 +187,32 @@ void MainWindow::onUserChanged(User user)
             tmp->HouseFlatNo = user.HouseFlatNo;
         }
     }
+    refreshUsersTable();
 }
 
+void MainWindow::refreshUsersTable()
+{
+    QStandardItemModel *model = new QStandardItemModel();
+    QStringList horzHeaders;
+    horzHeaders << "ID" << "Imię" << "Nazwisko" << "Pesel" << "Miejscowość" << "Ulica" << "Nr domu/mieszkania";
+    model->setHorizontalHeaderLabels(horzHeaders);
+
+    for(List<User>::iterator it = _users.begin();it != _users.end();++it){
+        QList<QStandardItem*> items;
+        items.append(new QStandardItem(it->sId().c_str()));
+        items.append(new QStandardItem(it->Name.c_str()));
+        items.append(new QStandardItem(it->Surname.c_str()));
+        items.append(new QStandardItem(it->Pesel.c_str()));
+        items.append(new QStandardItem(it->Place.c_str()));
+        items.append(new QStandardItem(it->Street.c_str()));
+        items.append(new QStandardItem(it->HouseFlatNo.c_str()));
+
+        model->appendRow(items);
+    }
+    if(ui->UserTable->model() != nullptr)
+        delete ui->UserTable->model();
+
+    ui->UserTable->setModel(model);
+}
 
 /// ENDREGION
