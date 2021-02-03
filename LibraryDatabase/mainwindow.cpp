@@ -11,6 +11,7 @@
 #include <QDialog>
 #include <QtCore>
 #include <QtGui>
+#include <QTableView>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -18,11 +19,11 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     refreshUsersTable();
-    //    QStandardItemModel *model = new QStandardItemModel(5,5,this);
-    //    QStringList horzHeaders;
-    //    horzHeaders << "ID książki" << "Tytuł książki" << "Autor" << "Rok wydania" << "Kraj publikacji" << "Numer ISBN";
-    //    model->setHorizontalHeaderLabels(horzHeaders);
-    //    ui->BookTable->setModel(model);
+    ui->BookTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->BookTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    refreshBooksTable();
+
+    connect(ui->BookTable, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onRowClicked(const QModelIndex &)));
 }
 
 
@@ -44,6 +45,53 @@ MainWindow::~MainWindow()
 
 
 /// REGION Books
+
+
+void MainWindow::onRowClicked(const QModelIndex &index)
+{
+    if (index.isValid())
+    {
+        int row = ui->BookTable->selectionModel()->currentIndex().row();
+        ui->BookTable->model()->data(ui->BookTable->model()->index(row,0)).toString();
+
+        qDebug() << ui->BookTable->model()->data(ui->BookTable->model()->index(row,0)).toString();
+    }
+}
+
+int MainWindow::howManyBooks()
+{
+    int counter = 0;
+    for(List<Book>::iterator it = _books.begin();it != _books.end();++it)
+        counter++;
+
+    return counter;
+}
+
+void MainWindow::refreshBooksTable()
+{
+    int tableRows = howManyBooks();
+    int i = 0;
+    QStandardItemModel *model = new QStandardItemModel(tableRows,6,this);
+
+    for(List<Book>::iterator it = _books.begin();it != _books.end();++it)
+    {
+        model->setData(model->index(i, 0, QModelIndex()), it->Id);
+        model->setData(model->index(i, 1, QModelIndex()), it->Title.c_str());
+        model->setData(model->index(i, 2, QModelIndex()), it->Author.c_str());
+        model->setData(model->index(i, 3, QModelIndex()), it->PublishDate.c_str());
+        model->setData(model->index(i, 4, QModelIndex()), it->PublishCountry.c_str());
+        model->setData(model->index(i, 5, QModelIndex()), it->IsbnNumber.c_str());
+        i++;
+    }
+
+
+    QStringList horzHeaders;
+    horzHeaders << "ID książki" << "Tytuł książki" << "Autor" << "Rok wydania" << "Kraj publikacji" << "Numer ISBN";
+    model->setHorizontalHeaderLabels(horzHeaders);
+    ui->BookTable->setModel(model);
+}
+
+
 void MainWindow::on_AddBookBtn_clicked()
 {
     BookForm bookForm(this);
@@ -59,15 +107,23 @@ void MainWindow::on_EditBookBtn_clicked()
 
 void MainWindow::onBookChanged(Book book)
 {
-    this->_books.Add(book);
 
     if(book.Id == 0)
     {
+        int max = 1;
+        for(List<Book>::iterator it = _books.begin(); it != _books.end(); ++it)
+        {
+            if(it->Id >= max)
+                max = it->Id + 1;
+        }
+        book.Id = max;
+
         this->_books.Add(book);
         //saveDataToFile(book);
     }
     else
     {
+
         Book *tmp = this->_books.FirstOrDefault([&](Book b){return b.Id == book.Id;});
         tmp->Title = book.Title;
         tmp->Author = book.Author;
@@ -75,6 +131,8 @@ void MainWindow::onBookChanged(Book book)
         tmp->PublishDate = book.PublishDate;
         tmp->IsbnNumber = book.IsbnNumber;
     }
+
+    refreshBooksTable();
 }
 
 void MainWindow::saveDataToFile()

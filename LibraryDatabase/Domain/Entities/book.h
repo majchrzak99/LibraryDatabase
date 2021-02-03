@@ -6,7 +6,7 @@
 class Book
 {
 public:
-    int Id;
+    int Id = 0;
     std::string Title;
     std::string Author;
     std::string PublishDate;

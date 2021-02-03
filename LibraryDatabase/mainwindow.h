@@ -19,6 +19,12 @@ public:
     ~MainWindow();
 
 private slots:
+    void onRowClicked(const QModelIndex &index);
+
+    int howManyBooks();
+
+    void refreshBooksTable();
+
     void on_DeleteBookBtn_clicked();
 
     void on_DeleteUserBtn_clicked();
