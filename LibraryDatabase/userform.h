@@ -14,7 +14,7 @@ class UserForm : public QDialog
 
 public:
     explicit UserForm(QWidget *parent = nullptr);
-    explicit UserForm::UserForm(QWidget *parent,User user) ;
+    explicit UserForm(QWidget *parent,User user) ;
     ~UserForm();
 
 private slots:
