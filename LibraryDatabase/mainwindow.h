@@ -4,6 +4,7 @@
 #include <QMainWindow>
 #include "Domain/Common/list.h"
 #include "Domain/Entities/book.h"
+#include "Domain/Entities/user.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -34,9 +35,10 @@ private slots:
 
     void onBookChanged(Book book);
 
-    //void onBookAdded(Book book);
+    void onUserChanged(User user);
 private:
     Ui::MainWindow *ui;
     List<Book> _books;
+    List<User> _users;
 };
 #endif // MAINWINDOW_H

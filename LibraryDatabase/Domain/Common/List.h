@@ -10,7 +10,6 @@ private:
         elementPointer* next;
     };
     elementPointer* start;
-    //elementPointer* back;
 public:
     class iterator{
     private:
@@ -46,7 +45,6 @@ public:
     {
         this->start= nullptr;
 
-        //this->back= new elementPointer();
     }
     ~List()
     {
@@ -55,7 +53,7 @@ public:
             delete this->start;
             this->start = tmp;
         }
-        //delete this->back;
+
     }
     void Add(T item)
     {
@@ -119,7 +117,7 @@ public:
     {
         //zacznij przeszukiwać listę
         elementPointer* tmp = this->start;
-        while(tmp != this->back)
+        while(tmp != nullptr)
         {
             if(predicate(tmp->data))
             {
