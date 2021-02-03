@@ -125,7 +125,16 @@ void MainWindow::on_AddUserBtn_clicked()
 void MainWindow::on_EditUserBtn_clicked()
 {
     //pobrać zaznaczoną encję i przekazać do konstruktora
-    User *tmp = this->_users.FirstOrDefault([&](User u){return true;});
+    QItemSelectionModel *select = ui->UserTable->selectionModel();
+    int selectedId = 0;
+
+    if(select->hasSelection())
+    {
+        int rowidx = ui->UserTable->selectionModel()->currentIndex().row();
+
+        selectedId  = ui->UserTable->model()->data(ui->UserTable->model()->index(rowidx,0)).toInt();
+    }
+    User *tmp = this->_users.FirstOrDefault([&](User u){return u.Id == selectedId;});
     UserForm userForm(this,*tmp);
     QObject::connect(&userForm,&UserForm::userChanged,this,&MainWindow::onUserChanged);
     userForm.exec();
