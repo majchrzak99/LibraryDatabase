@@ -213,6 +213,8 @@ void MainWindow::refreshUsersTable()
         delete ui->UserTable->model();
 
     ui->UserTable->setModel(model);
+    ui->UserTable->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
+    ui->UserTable->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
 }
 
 /// ENDREGION
