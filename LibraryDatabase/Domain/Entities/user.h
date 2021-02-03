@@ -6,7 +6,7 @@
 class User
 {
 public:
-    int Id;
+    int Id = 0;
     std::string Name;
     std::string Surname;
     std::string Pesel;

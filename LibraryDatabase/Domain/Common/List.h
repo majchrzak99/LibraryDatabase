@@ -84,7 +84,7 @@ public:
         //przeszukać listę i dla każdego elementu porównać referencję(adresy) z przkazanym parametrem
         elementPointer* tmp = this->start;
 
-        while(tmp != this->back)
+        while(tmp != nullptr)
         {
             if(&(tmp->data) == item)
             {
@@ -119,6 +119,7 @@ public:
         elementPointer* tmp = this->start;
         while(tmp != nullptr)
         {
+
             if(predicate(tmp->data))
             {
                 return &(tmp->data);

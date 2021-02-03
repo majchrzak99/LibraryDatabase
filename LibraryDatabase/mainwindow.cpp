@@ -109,7 +109,8 @@ void MainWindow::on_AddUserBtn_clicked()
 void MainWindow::on_EditUserBtn_clicked()
 {
     //pobrać zaznaczoną encję i przekazać do konstruktora
-    UserForm userForm(this);
+    User *tmp = this->_users.FirstOrDefault([&](User u){return true;});
+    UserForm userForm(this,*tmp);
     QObject::connect(&userForm,&UserForm::userChanged,this,&MainWindow::onUserChanged);
     userForm.exec();
 }
@@ -120,11 +121,12 @@ void MainWindow::on_DeleteUserBtn_clicked()
     msgBox.setButtonText(QMessageBox::Yes,"Tak");
     msgBox.setButtonText(QMessageBox::No,"Nie");
 
+    User* userToDelete = _users.FirstOrDefault([&](User u){return  true;});
     int result = msgBox.exec();
     switch (result)
     {
     case QMessageBox::Yes:
-
+        _users.Remove(userToDelete);
         break;
     case QMessageBox::No:
         break;
@@ -134,18 +136,26 @@ void MainWindow::onUserChanged(User user)
 {
     if(user.Id == 0)
     {
+        int max = 0;
+        for(List<User>::iterator it = _users.begin(); it != _users.end(); ++it){
+            if(it->Id > max)
+                max = it->Id + 1;
+        }
+        user.Id = max;
         this->_users.Add(user);
     }
     else
     {
         User *tmp = this->_users.FirstOrDefault([&](User u){return u.Id == user.Id;});
+        if(tmp != nullptr){
 
-        tmp->Name = user.Name;
-        tmp->Pesel = user.Pesel;
-        tmp->Place = user.Place;
-        tmp->Street = user.Street;
-        tmp->Surname = user.Surname;
-        tmp->HouseFlatNo = user.HouseFlatNo;
+            tmp->Name = user.Name;
+            tmp->Pesel = user.Pesel;
+            tmp->Place = user.Place;
+            tmp->Street = user.Street;
+            tmp->Surname = user.Surname;
+            tmp->HouseFlatNo = user.HouseFlatNo;
+        }
     }
 }
 

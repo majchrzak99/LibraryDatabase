@@ -13,6 +13,12 @@ UserForm::UserForm(QWidget *parent,User user) :
 {
     ui->setupUi(this);
     this->_user = user;
+    this->ui->NameLineEdit->setText(_user.Name.c_str());
+    this->ui->SurnameLineEdit->setText(_user.Surname.c_str());
+    this->ui->PeselLineEdit->setText(_user.Pesel.c_str());
+    this->ui->PlaceLineEdit->setText(_user.Place.c_str() );
+    this->ui->HouseFlatNoLineEdit->setText(_user.HouseFlatNo.c_str());
+    this->ui->StreetLineEdit->setText(_user.Street.c_str());
 }
 UserForm::~UserForm()
 {
