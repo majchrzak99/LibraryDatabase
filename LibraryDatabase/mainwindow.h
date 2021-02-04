@@ -44,6 +44,8 @@ private slots:
 
     void on_pushButton_clicked();
 
+    void refreshBorrowTable();
+
 private:
     Ui::MainWindow *ui;
     List<Book> _books;

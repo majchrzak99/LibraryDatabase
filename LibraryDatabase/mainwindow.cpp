@@ -78,6 +78,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     refreshUsersTable();
     refreshBooksTable();
+    refreshBorrowTable();
 
     connect(ui->BookTable, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onRowClicked(const QModelIndex &)));
 }
@@ -100,6 +101,34 @@ void MainWindow::on_BorrowBookBtn_clicked()
     // User* userToDelete = _users.FirstOrDefault([&](User u){return  u.Id == selectedId;});
 
     //
+}
+
+
+
+void MainWindow::refreshBorrowTable()
+{
+    QStandardItemModel *model = new QStandardItemModel();
+    QStringList horzHeaders;
+    horzHeaders << "ID wypożyczenia" << "ID książki" << "Data wypożyczenia" << "Data oddania" << "ID użytkownika";
+    model->setHorizontalHeaderLabels(horzHeaders);
+
+    for(List<Borrow>::iterator it = _borrows.begin();it != _borrows.end(); ++it)
+    {
+        QList<QStandardItem*> items;
+        items.append(new QStandardItem(it->Id_borrow));
+        items.append(new QStandardItem(it->Id_book));
+        items.append(new QStandardItem(it->borrowDate.c_str()));
+        items.append(new QStandardItem(it->returnDate.c_str()));
+        items.append(new QStandardItem(it->Id_user.c_str()));
+
+        model->appendRow(items);
+    }
+    if(ui->BorrowingTable->model() != nullptr)
+        delete ui->BorrowingTable->model();
+
+    ui->BorrowingTable->setModel(model);
+    ui->BorrowingTable->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
+    ui->BorrowingTable->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
 }
 
 
