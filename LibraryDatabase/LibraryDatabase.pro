@@ -32,6 +32,7 @@ HEADERS += \
 
 FORMS += \
     bookform.ui \
+    borrowingform.ui \
     mainwindow.ui \
     userform.ui
 
