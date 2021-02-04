@@ -39,11 +39,11 @@ MainWindow::MainWindow(QWidget *parent)
             QStringList lineToken = fileLine.split(",", QString::SkipEmptyParts);
             Book book;
             book.Id = lineToken.at(0).toInt();
-            book.Title = lineToken.at(1).toStdString();
-            book.Author = lineToken.at(2).toStdString();
-            book.PublishDate = lineToken.at(3).toStdString();
-            book.PublishCountry = lineToken.at(4).toStdString();
-            book.IsbnNumber = lineToken.at(5).toStdString();
+            book.Title = lineToken.at(1);
+            book.Author = lineToken.at(2);
+            book.PublishDate = lineToken.at(3);
+            book.PublishCountry = lineToken.at(4);
+            book.IsbnNumber = lineToken.at(5);
             this->_books.Add(book);
             lineindex++;
         }
@@ -62,12 +62,12 @@ MainWindow::MainWindow(QWidget *parent)
             QStringList lineToken = fileLine.split(",", QString::SkipEmptyParts);
             User user;
             user.Id = lineToken.at(0).toInt();
-            user.Name = lineToken.at(1).toStdString();
-            user.Surname = lineToken.at(2).toStdString();
-            user.Pesel = lineToken.at(3).toStdString();
-            user.Place = lineToken.at(4).toStdString();
-            user.Street = lineToken.at(5).toStdString();
-            user.HouseFlatNo = lineToken.at(6).toStdString();
+            user.Name = lineToken.at(1);
+            user.Surname = lineToken.at(2);
+            user.Pesel = lineToken.at(3);
+            user.Place = lineToken.at(4);
+            user.Street = lineToken.at(5);
+            user.HouseFlatNo = lineToken.at(6);
             this->_users.Add(user);
             lineindex++;
         }
@@ -117,8 +117,8 @@ void MainWindow::refreshBorrowTable()
         QList<QStandardItem*> items;
         items.append(new QStandardItem(it->Id_borrow));
         items.append(new QStandardItem(it->Id_book));
-        items.append(new QStandardItem(it->borrowDate.c_str()));
-        items.append(new QStandardItem(it->returnDate.c_str()));
+        items.append(new QStandardItem(it->borrowDate));
+        items.append(new QStandardItem(it->returnDate));
         items.append(new QStandardItem(it->Id_user));
 
         model->appendRow(items);
@@ -163,11 +163,11 @@ void MainWindow::refreshBooksTable()
     for(List<Book>::iterator it = _books.begin();it != _books.end();++it)
     {
         model->setData(model->index(i, 0, QModelIndex()), it->Id);
-        model->setData(model->index(i, 1, QModelIndex()), it->Title.c_str());
-        model->setData(model->index(i, 2, QModelIndex()), it->Author.c_str());
-        model->setData(model->index(i, 3, QModelIndex()), it->PublishDate.c_str());
-        model->setData(model->index(i, 4, QModelIndex()), it->PublishCountry.c_str());
-        model->setData(model->index(i, 5, QModelIndex()), it->IsbnNumber.c_str());
+        model->setData(model->index(i, 1, QModelIndex()), it->Title);
+        model->setData(model->index(i, 2, QModelIndex()), it->Author);
+        model->setData(model->index(i, 3, QModelIndex()), it->PublishDate);
+        model->setData(model->index(i, 4, QModelIndex()), it->PublishCountry);
+        model->setData(model->index(i, 5, QModelIndex()), it->IsbnNumber);
         i++;
     }
 
@@ -379,13 +379,13 @@ void MainWindow::refreshUsersTable()
 
     for(List<User>::iterator it = _users.begin();it != _users.end();++it){
         QList<QStandardItem*> items;
-        items.append(new QStandardItem(it->sId().c_str()));
-        items.append(new QStandardItem(it->Name.c_str()));
-        items.append(new QStandardItem(it->Surname.c_str()));
-        items.append(new QStandardItem(it->Pesel.c_str()));
-        items.append(new QStandardItem(it->Place.c_str()));
-        items.append(new QStandardItem(it->Street.c_str()));
-        items.append(new QStandardItem(it->HouseFlatNo.c_str()));
+        items.append(new QStandardItem(it->sId().toInt()));
+        items.append(new QStandardItem(it->Name));
+        items.append(new QStandardItem(it->Surname));
+        items.append(new QStandardItem(it->Pesel));
+        items.append(new QStandardItem(it->Place));
+        items.append(new QStandardItem(it->Street));
+        items.append(new QStandardItem(it->HouseFlatNo));
 
         model->appendRow(items);
     }
@@ -419,7 +419,7 @@ void MainWindow::on_pushButton_clicked()
            QTextStream stream(&file);
            for(List<Book>::iterator it = _books.begin();it != _books.end();++it)
            {
-               stream << QString::number(it->Id) << ", " << it->Title.c_str()<<"," << it->Author.c_str() <<"," << it->PublishDate.c_str() <<"," << it->PublishCountry.c_str() <<"," << it->IsbnNumber.c_str() << Qt::endl;
+               stream << QString::number(it->Id) << ", " << it->Title<<"," << it->Author <<"," << it->PublishDate <<"," << it->PublishCountry <<"," << it->IsbnNumber << Qt::endl;
            }
            file.close();
        }
@@ -430,7 +430,7 @@ void MainWindow::on_pushButton_clicked()
            QTextStream stream(&file2);
            for(List<User>::iterator i = _users.begin(); i != _users.end(); ++i)
            {
-               stream << QString::number(i->Id) << "," << i->Name.c_str()<< "," << i->Surname.c_str() << "," << i->Pesel.c_str() <<"," << i->Place.c_str() <<"," << i->HouseFlatNo.c_str() << ", " << i->Street.c_str() << Qt::endl;
+               stream << QString::number(i->Id) << "," << i->Name<< "," << i->Surname << "," << i->Pesel <<"," << i->Place <<"," << i->HouseFlatNo << ", " << i->Street << Qt::endl;
            }
            file2.close();
        }

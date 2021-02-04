@@ -1,19 +1,19 @@
 #ifndef USER_H
 #define USER_H
 
-#include <string>
+#include <QString>
 
 class User
 {
 public:
     int Id = 0;
-    std::string sId(){return std::to_string(Id);};
-    std::string Name;
-    std::string Surname;
-    std::string Pesel;
-    std::string Place;
-    std::string HouseFlatNo;
-    std::string Street;
+    QString sId(){return (QString)(Id);};
+    QString Name;
+    QString Surname;
+    QString Pesel;
+    QString Place;
+    QString HouseFlatNo;
+    QString Street;
 };
 
 #endif

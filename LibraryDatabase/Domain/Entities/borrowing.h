@@ -1,7 +1,7 @@
 #ifndef BORROWING_H
 #define BORROWING_H
 
-#include <string>
+#include <QString>
 #include <QDateTime>
 
 class Borrowing
@@ -9,8 +9,8 @@ class Borrowing
 public:
     int Id_borrow = 0;
     int Id_book;
-    std::string borrowDate;
-    std::string returnDate;
+    QString borrowDate;
+    QString returnDate;
     int Id_user;
 };
 

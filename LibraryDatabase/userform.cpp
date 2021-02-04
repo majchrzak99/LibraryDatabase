@@ -13,12 +13,12 @@ UserForm::UserForm(QWidget *parent,User user) :
 {
     ui->setupUi(this);
     this->_user = user;
-    this->ui->NameLineEdit->setText(_user.Name.c_str());
-    this->ui->SurnameLineEdit->setText(_user.Surname.c_str());
-    this->ui->PeselLineEdit->setText(_user.Pesel.c_str());
-    this->ui->PlaceLineEdit->setText(_user.Place.c_str() );
-    this->ui->HouseFlatNoLineEdit->setText(_user.HouseFlatNo.c_str());
-    this->ui->StreetLineEdit->setText(_user.Street.c_str());
+    this->ui->NameLineEdit->setText(_user.Name);
+    this->ui->SurnameLineEdit->setText(_user.Surname);
+    this->ui->PeselLineEdit->setText(_user.Pesel);
+    this->ui->PlaceLineEdit->setText(_user.Place);
+    this->ui->HouseFlatNoLineEdit->setText(_user.HouseFlatNo);
+    this->ui->StreetLineEdit->setText(_user.Street);
 }
 UserForm::~UserForm()
 {
@@ -27,12 +27,12 @@ UserForm::~UserForm()
 
 void UserForm::on_SaveBtn_clicked()
 {
-    _user.Name = this->ui->NameLineEdit->text().toStdString();
-    _user.Surname = this->ui->SurnameLineEdit->text().toStdString();
-    _user.Pesel = this->ui->PeselLineEdit->text().toStdString();
-    _user.Place = this->ui->PlaceLineEdit->text().toStdString();
-    _user.HouseFlatNo = this->ui->HouseFlatNoLineEdit->text().toStdString();
-    _user.Street = this->ui->StreetLineEdit->text().toStdString();
+    _user.Name = this->ui->NameLineEdit->text();
+    _user.Surname = this->ui->SurnameLineEdit->text();
+    _user.Pesel = this->ui->PeselLineEdit->text();
+    _user.Place = this->ui->PlaceLineEdit->text();
+    _user.HouseFlatNo = this->ui->HouseFlatNoLineEdit->text();
+    _user.Street = this->ui->StreetLineEdit->text();
 
     emit userChanged(_user);
     this->close();
