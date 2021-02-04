@@ -17,6 +17,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
     bookform.cpp \
+    borrowform.cpp \
     main.cpp \
     mainwindow.cpp \
     userform.cpp
@@ -27,12 +28,13 @@ HEADERS += \
     Domain/Entities/borrowing.h \
     Domain/Entities/user.h \
     bookform.h \
+    borrowform.h \
     mainwindow.h \
     userform.h
 
 FORMS += \
     bookform.ui \
-    borrowingform.ui \
+    borrowform.ui \
     mainwindow.ui \
     userform.ui
 

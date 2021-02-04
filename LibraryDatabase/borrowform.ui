@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>UserForm</class>
- <widget class="QDialog" name="UserForm">
+ <class>BorrowForm</class>
+ <widget class="QDialog" name="BorrowForm">
   <property name="geometry">
    <rect>
     <x>0</x>

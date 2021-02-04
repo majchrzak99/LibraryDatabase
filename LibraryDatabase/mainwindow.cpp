@@ -94,7 +94,13 @@ MainWindow::~MainWindow()
 
 /// REGION Borrowings
 
+void MainWindow::on_BorrowBookBtn_clicked()
+{
+    //if(boorowing
+    // User* userToDelete = _users.FirstOrDefault([&](User u){return  u.Id == selectedId;});
 
+    //
+}
 
 
 /// ENDREGION
@@ -363,21 +369,6 @@ void MainWindow::refreshUsersTable()
 }
 
 /// ENDREGION
-
-
-
-
-
-
-
-void MainWindow::on_BorrowBookBtn_clicked()
-{
-    //if(boorowing
-    // User* userToDelete = _users.FirstOrDefault([&](User u){return  u.Id == selectedId;});
-
-    //
-}
-
 
 
 
