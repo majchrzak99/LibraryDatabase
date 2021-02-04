@@ -1,17 +1,4 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "QMessageBox"
-#include "userform.h"
-#include "bookform.h"
-#include <QString>
-#include <QList>
-#include <QStringList>
-#include <QDir>
-#include <QDebug>
-#include <QDialog>
-#include <QtCore>
-#include <QtGui>
-#include <QTableView>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -101,6 +88,18 @@ void MainWindow::on_BorrowBookBtn_clicked()
     // User* userToDelete = _users.FirstOrDefault([&](User u){return  u.Id == selectedId;});
 
     //
+    QItemSelectionModel *select = ui->BookTable->selectionModel();
+    int selectedId = 0;
+
+    if(select->hasSelection())
+    {
+        int rowidx = ui->BookTable->selectionModel()->currentIndex().row();
+
+        selectedId  = ui->BookTable->model()->data(ui->BookTable->model()->index(rowidx,0)).toInt();
+    }
+    Book *tmp = this->_books.FirstOrDefault([&](Book u){return u.Id == selectedId;});
+    BorrowForm form(tmp->Id,this->_users,this);
+    form.exec();
 }
 
 
@@ -409,31 +408,31 @@ void MainWindow::refreshUsersTable()
 
 void MainWindow::on_pushButton_clicked()
 {
-       QString filename = "books-data.csv";
-       QString filename2 = "users-data.csv";
-       QString filename3 = "borrowings-data.csv";
+    QString filename = "books-data.csv";
+    QString filename2 = "users-data.csv";
+    QString filename3 = "borrowings-data.csv";
 
-       QFile file(filename);
-       if (file.open(QIODevice::WriteOnly | QIODevice::Text))
-       {
-           QTextStream stream(&file);
-           for(List<Book>::iterator it = _books.begin();it != _books.end();++it)
-           {
-               stream << QString::number(it->Id) << ", " << it->Title.c_str()<<"," << it->Author.c_str() <<"," << it->PublishDate.c_str() <<"," << it->PublishCountry.c_str() <<"," << it->IsbnNumber.c_str() << Qt::endl;
-           }
-           file.close();
-       }
+    QFile file(filename);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream stream(&file);
+        for(List<Book>::iterator it = _books.begin();it != _books.end();++it)
+        {
+            stream << QString::number(it->Id) << ", " << it->Title.c_str()<<"," << it->Author.c_str() <<"," << it->PublishDate.c_str() <<"," << it->PublishCountry.c_str() <<"," << it->IsbnNumber.c_str() << Qt::endl;
+        }
+        file.close();
+    }
 
-       QFile file2(filename2);
-       if (file2.open(QIODevice::WriteOnly | QIODevice::Text))
-       {
-           QTextStream stream(&file2);
-           for(List<User>::iterator i = _users.begin(); i != _users.end(); ++i)
-           {
-               stream << QString::number(i->Id) << "," << i->Name.c_str()<< "," << i->Surname.c_str() << "," << i->Pesel.c_str() <<"," << i->Place.c_str() <<"," << i->HouseFlatNo.c_str() << ", " << i->Street.c_str() << Qt::endl;
-           }
-           file2.close();
-       }
+    QFile file2(filename2);
+    if (file2.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream stream(&file2);
+        for(List<User>::iterator i = _users.begin(); i != _users.end(); ++i)
+        {
+            stream << QString::number(i->Id) << "," << i->Name.c_str()<< "," << i->Surname.c_str() << "," << i->Pesel.c_str() <<"," << i->Place.c_str() <<"," << i->HouseFlatNo.c_str() << ", " << i->Street.c_str() << Qt::endl;
+        }
+        file2.close();
+    }
 }
 
 ///ENDREGION
