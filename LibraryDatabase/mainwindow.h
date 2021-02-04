@@ -66,5 +66,6 @@ private:
     List<User> _users;
     List<Borrowing> _borrows;
     void refreshUsersTable();
+
 };
 #endif // MAINWINDOW_H

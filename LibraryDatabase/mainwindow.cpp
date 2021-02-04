@@ -102,6 +102,16 @@ void MainWindow::on_BorrowBookBtn_clicked()
     if(tmp == nullptr)
         return;
 
+    //sprawdzanie czy jest juz wypozyczona
+    Borrowing *borrowing = this->_borrows.FirstOrDefault([&](Borrowing b){return b.Id_book == tmp->Id && b.returnDate.isEmpty();});
+
+    if(borrowing != nullptr)
+    {
+        QMessageBox msg(QMessageBox::Warning, "Uwaga","Książka jest już wypożyczona", QMessageBox::Ok,this);
+        msg.exec();
+        return;
+    }
+
     QMap<int,QString> dict;
 
     for(List<User>::iterator it = _users.begin();it!=_users.end();++it){
@@ -167,22 +177,30 @@ void MainWindow::refreshBooksTable()
 {
     int tableRows = howManyBooks();
     int i = 0;
-    QStandardItemModel *model = new QStandardItemModel(tableRows,6,this);
+    QStandardItemModel *model = new QStandardItemModel(tableRows,7,this);
 
     for(List<Book>::iterator it = _books.begin();it != _books.end();++it)
     {
+        Borrowing *borrowing = this->_borrows.FirstOrDefault([&](Borrowing b){return b.Id_book == it->Id && b.returnDate.isEmpty();});
+
         model->setData(model->index(i, 0, QModelIndex()), it->Id);
         model->setData(model->index(i, 1, QModelIndex()), it->Title);
         model->setData(model->index(i, 2, QModelIndex()), it->Author);
         model->setData(model->index(i, 3, QModelIndex()), it->PublishDate);
         model->setData(model->index(i, 4, QModelIndex()), it->PublishCountry);
         model->setData(model->index(i, 5, QModelIndex()), it->IsbnNumber);
+        if(borrowing != nullptr){
+            model->setData(model->index(i, 6, QModelIndex()), "Tak");
+        }else{
+            model->setData(model->index(i, 6, QModelIndex()), "Nie");
+        }
+
         i++;
     }
 
 
     QStringList horzHeaders;
-    horzHeaders << "ID książki" << "Tytuł książki" << "Autor" << "Rok wydania" << "Kraj publikacji" << "Numer ISBN";
+    horzHeaders << "ID książki" << "Tytuł książki" << "Autor" << "Rok wydania" << "Kraj publikacji" << "Numer ISBN" << "Czy wypożyczona";
     model->setHorizontalHeaderLabels(horzHeaders);
     ui->BookTable->setModel(model);
 }
@@ -422,31 +440,31 @@ void MainWindow::refreshUsersTable()
 
 void MainWindow::on_pushButton_clicked()
 {
-       QString filename = "books-data.csv";
-       QString filename2 = "users-data.csv";
-       QString filename3 = "borrowings-data.csv";
+    QString filename = "books-data.csv";
+    QString filename2 = "users-data.csv";
+    QString filename3 = "borrowings-data.csv";
 
-       QFile file(filename);
-       if (file.open(QIODevice::WriteOnly | QIODevice::Text))
-       {
-           QTextStream stream(&file);
-           for(List<Book>::iterator it = _books.begin();it != _books.end();++it)
-           {
-               stream << QString::number(it->Id) << ", " << it->Title<<"," << it->Author <<"," << it->PublishDate <<"," << it->PublishCountry <<"," << it->IsbnNumber << Qt::endl;
-           }
-           file.close();
-       }
+    QFile file(filename);
+    if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream stream(&file);
+        for(List<Book>::iterator it = _books.begin();it != _books.end();++it)
+        {
+            stream << QString::number(it->Id) << ", " << it->Title<<"," << it->Author <<"," << it->PublishDate <<"," << it->PublishCountry <<"," << it->IsbnNumber << Qt::endl;
+        }
+        file.close();
+    }
 
-       QFile file2(filename2);
-       if (file2.open(QIODevice::WriteOnly | QIODevice::Text))
-       {
-           QTextStream stream(&file2);
-           for(List<User>::iterator i = _users.begin(); i != _users.end(); ++i)
-           {
-               stream << QString::number(i->Id) << "," << i->Name<< "," << i->Surname << "," << i->Pesel <<"," << i->Place <<"," << i->HouseFlatNo << ", " << i->Street << Qt::endl;
-           }
-           file2.close();
-       }
+    QFile file2(filename2);
+    if (file2.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream stream(&file2);
+        for(List<User>::iterator i = _users.begin(); i != _users.end(); ++i)
+        {
+            stream << QString::number(i->Id) << "," << i->Name<< "," << i->Surname << "," << i->Pesel <<"," << i->Place <<"," << i->HouseFlatNo << ", " << i->Street << Qt::endl;
+        }
+        file2.close();
+    }
 }
 
 ///ENDREGION
