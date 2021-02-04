@@ -5,6 +5,7 @@
 #include "Domain/Common/list.h"
 #include "Domain/Entities/book.h"
 #include "Domain/Entities/user.h"
+#include "Domain/Entities/borrowing.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -50,6 +51,7 @@ private:
     Ui::MainWindow *ui;
     List<Book> _books;
     List<User> _users;
+    List<Borrowing> _borrows;
     void refreshUsersTable();
 };
 #endif // MAINWINDOW_H

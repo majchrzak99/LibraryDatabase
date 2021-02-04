@@ -112,14 +112,14 @@ void MainWindow::refreshBorrowTable()
     horzHeaders << "ID wypożyczenia" << "ID książki" << "Data wypożyczenia" << "Data oddania" << "ID użytkownika";
     model->setHorizontalHeaderLabels(horzHeaders);
 
-    for(List<Borrow>::iterator it = _borrows.begin();it != _borrows.end(); ++it)
+    for(List<Borrowing>::iterator it = _borrows.begin();it != _borrows.end(); ++it)
     {
         QList<QStandardItem*> items;
         items.append(new QStandardItem(it->Id_borrow));
         items.append(new QStandardItem(it->Id_book));
         items.append(new QStandardItem(it->borrowDate.c_str()));
         items.append(new QStandardItem(it->returnDate.c_str()));
-        items.append(new QStandardItem(it->Id_user.c_str()));
+        items.append(new QStandardItem(it->Id_user));
 
         model->appendRow(items);
     }

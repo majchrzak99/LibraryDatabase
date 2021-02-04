@@ -7,10 +7,10 @@
 class Borrowing
 {
 public:
-    int Id_borow = 0;
+    int Id_borrow = 0;
     int Id_book;
-    QDateTime borrowDate;
-    QDateTime returnDate;
+    std::string borrowDate;
+    std::string returnDate;
     int Id_user;
 };
 
