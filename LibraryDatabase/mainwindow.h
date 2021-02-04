@@ -5,7 +5,20 @@
 #include "Domain/Common/list.h"
 #include "Domain/Entities/book.h"
 #include "Domain/Entities/user.h"
-#include "Domain/Entities/borrowing.h"
+#include "ui_mainwindow.h"
+#include "QMessageBox"
+#include "userform.h"
+#include "bookform.h"
+#include "borrowform.h"
+#include <QString>
+#include <QList>
+#include <QStringList>
+#include <QDir>
+#include <QDebug>
+#include <QDialog>
+#include <QtCore>
+#include <QtGui>
+#include <QTableView>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }

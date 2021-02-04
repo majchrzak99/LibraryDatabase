@@ -1,17 +1,4 @@
 #include "mainwindow.h"
-#include "ui_mainwindow.h"
-#include "QMessageBox"
-#include "userform.h"
-#include "bookform.h"
-#include <QString>
-#include <QList>
-#include <QStringList>
-#include <QDir>
-#include <QDebug>
-#include <QDialog>
-#include <QtCore>
-#include <QtGui>
-#include <QTableView>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -101,6 +88,18 @@ void MainWindow::on_BorrowBookBtn_clicked()
     // User* userToDelete = _users.FirstOrDefault([&](User u){return  u.Id == selectedId;});
 
     //
+    QItemSelectionModel *select = ui->BookTable->selectionModel();
+    int selectedId = 0;
+
+    if(select->hasSelection())
+    {
+        int rowidx = ui->BookTable->selectionModel()->currentIndex().row();
+
+        selectedId  = ui->BookTable->model()->data(ui->BookTable->model()->index(rowidx,0)).toInt();
+    }
+    Book *tmp = this->_books.FirstOrDefault([&](Book u){return u.Id == selectedId;});
+    BorrowForm form(tmp->Id,this->_users,this);
+    form.exec();
 }
 
 
