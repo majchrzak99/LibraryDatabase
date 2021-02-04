@@ -21,6 +21,10 @@ MainWindow::MainWindow(QWidget *parent)
     refreshUsersTable();
     ui->BookTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->BookTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->UserTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->UserTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->BorrowingTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+    ui->BorrowingTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     refreshBooksTable();
 
     connect(ui->BookTable, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onRowClicked(const QModelIndex &)));
@@ -44,19 +48,24 @@ MainWindow::~MainWindow()
 
 
 
+
+
+
 /// REGION Books
 
 
-void MainWindow::onRowClicked(const QModelIndex &index)
-{
-    if (index.isValid())
-    {
-        int row = ui->BookTable->selectionModel()->currentIndex().row();
-        ui->BookTable->model()->data(ui->BookTable->model()->index(row,0)).toString();
+//void MainWindow::onRowClicked(const QModelIndex &index)
+//{
+//    if (index.isValid())
+//    {
+//        int row = ui->BookTable->selectionModel()->currentIndex().row();
+//        ui->BookTable->model()->data(ui->BookTable->model()->index(row,0)).toString();
 
-        qDebug() << ui->BookTable->model()->data(ui->BookTable->model()->index(row,0)).toString();
-    }
-}
+//        int bookID = ui->BookTable->model()->data(ui->BookTable->model()->index(row,0)).toInt();
+
+//        qDebug() << bookID;
+//    }
+//}
 
 int MainWindow::howManyBooks()
 {
@@ -101,13 +110,25 @@ void MainWindow::on_AddBookBtn_clicked()
 
 void MainWindow::on_EditBookBtn_clicked()
 {
-    BookForm bookForm(this);
+    QItemSelectionModel *select = ui->BookTable->selectionModel();
+    int selectedId = 0;
+
+    if(select->hasSelection())
+    {
+        int rowidx = ui->BookTable->selectionModel()->currentIndex().row();
+
+        selectedId  = ui->BookTable->model()->data(ui->BookTable->model()->index(rowidx,0)).toInt();
+    }
+    Book *tmp = this->_books.FirstOrDefault([&](Book u){return u.Id == selectedId;});
+    BookForm bookForm(this, *tmp);
+    QObject::connect(&bookForm,&BookForm::bookAdded,this,&MainWindow::onBookChanged);
     bookForm.exec();
 }
 
+
+
 void MainWindow::onBookChanged(Book book)
 {
-
     if(book.Id == 0)
     {
         int max = 1;
@@ -155,10 +176,27 @@ void MainWindow::on_DeleteBookBtn_clicked()
     msgBox.setButtonText(QMessageBox::Yes,"Tak");
     msgBox.setButtonText(QMessageBox::No,"Nie");
 
+
+    QItemSelectionModel *select = ui->BookTable->selectionModel();
+    int selectedId = 0;
+
+    if(select->hasSelection())
+    {
+        int rowidx = ui->BookTable->selectionModel()->currentIndex().row();
+
+        selectedId  = ui->BookTable->model()->data(ui->BookTable->model()->index(rowidx,0)).toInt();
+    }
+
+    Book* bookToDelete = _books.FirstOrDefault([&](Book u){return  u.Id == selectedId;});
+
+    if(bookToDelete == nullptr)
+        return;
     int result = msgBox.exec();
     switch (result)
     {
     case QMessageBox::Yes:
+        _books.Remove(bookToDelete);
+        refreshBooksTable();
         break;
     case QMessageBox::No:
         break;
@@ -167,6 +205,12 @@ void MainWindow::on_DeleteBookBtn_clicked()
 }
 
 /// ENDREGION
+
+
+
+
+
+
 
 
 
@@ -285,3 +329,11 @@ void MainWindow::refreshUsersTable()
 }
 
 /// ENDREGION
+
+void MainWindow::on_BorrowBookBtn_clicked()
+{
+    //if(boorowing
+    // User* userToDelete = _users.FirstOrDefault([&](User u){return  u.Id == selectedId;});
+
+    //
+}

@@ -7,6 +7,7 @@ class Book
 {
 public:
     int Id = 0;
+    std::string sId(){return std::to_string(Id);};
     std::string Title;
     std::string Author;
     std::string PublishDate;
