@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget *parent)
     QFile file("books-data.csv");
     if (file.open(QIODevice::ReadOnly))
     {
-        int lineindex = 0;
+        qint32 lineindex = 0;
         QTextStream in(&file);
 
         while (!in.atEnd()) {
@@ -98,7 +98,17 @@ void MainWindow::on_BorrowBookBtn_clicked()
         selectedId  = ui->BookTable->model()->data(ui->BookTable->model()->index(rowidx,0)).toInt();
     }
     Book *tmp = this->_books.FirstOrDefault([&](Book u){return u.Id == selectedId;});
-    BorrowForm form(tmp->Id,this->_users,this);
+
+    if(tmp == nullptr)
+        return;
+
+    QMap<int,QString> dict;
+
+    for(List<User>::iterator it = _users.begin();it!=_users.end();++it){
+        dict.insert(it->Id,it->Name + " " + it->Surname);
+    }
+
+    BorrowForm form(tmp->Id,dict,this);
     form.exec();
 }
 
@@ -197,6 +207,8 @@ void MainWindow::on_EditBookBtn_clicked()
         selectedId  = ui->BookTable->model()->data(ui->BookTable->model()->index(rowidx,0)).toInt();
     }
     Book *tmp = this->_books.FirstOrDefault([&](Book u){return u.Id == selectedId;});
+    if(tmp == nullptr)
+        return;
     BookForm bookForm(this, *tmp);
     QObject::connect(&bookForm,&BookForm::bookAdded,this,&MainWindow::onBookChanged);
     bookForm.exec();
@@ -305,6 +317,8 @@ void MainWindow::on_EditUserBtn_clicked()
         selectedId  = ui->UserTable->model()->data(ui->UserTable->model()->index(rowidx,0)).toInt();
     }
     User *tmp = this->_users.FirstOrDefault([&](User u){return u.Id == selectedId;});
+    if(tmp == nullptr)
+        return;
     UserForm userForm(this,*tmp);
     QObject::connect(&userForm,&UserForm::userChanged,this,&MainWindow::onUserChanged);
     userForm.exec();

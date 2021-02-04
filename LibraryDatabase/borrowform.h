@@ -5,6 +5,7 @@
 #include "Domain/Common/List.h"
 #include "Domain/Entities/borrowing.h"
 #include "Domain/Entities/user.h"
+#include <QMap>
 namespace Ui {
 class BorrowForm;
 }
@@ -15,11 +16,12 @@ class BorrowForm : public QDialog
 
 public:
     explicit BorrowForm(QWidget *parent = nullptr);
-    explicit BorrowForm(int bookId, List<User> users,QWidget *parent = nullptr );
+    explicit BorrowForm(int bookId, QMap<int,QString> dict,QWidget *parent = nullptr );
     ~BorrowForm();
 
 private:
     Ui::BorrowForm *ui;
+    QMap<int,QString> comboSource;
 };
 
 #endif // BORROWFORM_H

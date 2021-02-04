@@ -8,18 +8,16 @@ BorrowForm::BorrowForm(QWidget *parent) :
     ui->setupUi(this);
 }
 
-BorrowForm::BorrowForm(int bookId, List<User> users,QWidget *parent) :
+BorrowForm::BorrowForm(int bookId, QMap<int,QString> dict,QWidget *parent) :
     QDialog(parent),
     ui(new Ui::BorrowForm)
 {
     ui->setupUi(this);
-    for(List<User>::iterator it = users.begin();it!=users.end();++it){
+    this->comboSource = dict;
+    for(QMap<int,QString>::iterator it = comboSource.begin();it!=comboSource.end();++it){
         QVariant v;
-        v.setValue(it->Id);
-        QString item = it->Name.c_str();
-        item += " ";
-        item += it->Surname.c_str();
-        this->ui->comboBox->addItem(QString(),v);
+        v.setValue(it.key());
+        this->ui->comboBox->addItem(it.value(),v);
     }
 
 }
