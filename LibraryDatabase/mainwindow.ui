@@ -24,7 +24,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>2</number>
     </property>
     <widget class="QWidget" name="Borrowing">
      <attribute name="title">
@@ -217,6 +217,19 @@
       </layout>
      </widget>
     </widget>
+   </widget>
+   <widget class="QPushButton" name="pushButton">
+    <property name="geometry">
+     <rect>
+      <x>654</x>
+      <y>0</y>
+      <width>131</width>
+      <height>24</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Zapisz bazę!</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="MenuBar">

@@ -18,13 +18,65 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    refreshUsersTable();
     ui->BookTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->BookTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->UserTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->UserTable->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->BorrowingTable->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
     ui->BorrowingTable->setSelectionBehavior(QAbstractItemView::SelectRows);
+
+
+    /// LOADING DATA FROM FILES
+
+    QFile file("books-data.csv");
+    if (file.open(QIODevice::ReadOnly))
+    {
+        int lineindex = 0;
+        QTextStream in(&file);
+
+        while (!in.atEnd()) {
+            QString fileLine = in.readLine();
+            QStringList lineToken = fileLine.split(",", QString::SkipEmptyParts);
+            Book book;
+            book.Id = lineToken.at(0).toInt();
+            book.Title = lineToken.at(1).toStdString();
+            book.Author = lineToken.at(2).toStdString();
+            book.PublishDate = lineToken.at(3).toStdString();
+            book.PublishCountry = lineToken.at(4).toStdString();
+            book.IsbnNumber = lineToken.at(5).toStdString();
+            this->_books.Add(book);
+            lineindex++;
+        }
+        file.close();
+    }
+
+
+    QFile file2("users-data.csv");
+    if (file2.open(QIODevice::ReadOnly))
+    {
+        int lineindex = 0;
+        QTextStream in(&file2);
+
+        while (!in.atEnd()) {
+            QString fileLine = in.readLine();
+            QStringList lineToken = fileLine.split(",", QString::SkipEmptyParts);
+            User user;
+            user.Id = lineToken.at(0).toInt();
+            user.Name = lineToken.at(1).toStdString();
+            user.Surname = lineToken.at(2).toStdString();
+            user.Pesel = lineToken.at(3).toStdString();
+            user.Place = lineToken.at(4).toStdString();
+            user.Street = lineToken.at(5).toStdString();
+            user.HouseFlatNo = lineToken.at(6).toStdString();
+            this->_users.Add(user);
+            lineindex++;
+        }
+        file2.close();
+    }
+
+
+
+    refreshUsersTable();
     refreshBooksTable();
 
     connect(ui->BookTable, SIGNAL(clicked(const QModelIndex &)), this, SLOT(onRowClicked(const QModelIndex &)));
@@ -35,6 +87,9 @@ MainWindow::~MainWindow()
 {
     delete ui;
 }
+
+
+
 
 
 /// REGION Borrowings
@@ -54,18 +109,6 @@ MainWindow::~MainWindow()
 /// REGION Books
 
 
-//void MainWindow::onRowClicked(const QModelIndex &index)
-//{
-//    if (index.isValid())
-//    {
-//        int row = ui->BookTable->selectionModel()->currentIndex().row();
-//        ui->BookTable->model()->data(ui->BookTable->model()->index(row,0)).toString();
-
-//        int bookID = ui->BookTable->model()->data(ui->BookTable->model()->index(row,0)).toInt();
-
-//        qDebug() << bookID;
-//    }
-//}
 
 int MainWindow::howManyBooks()
 {
@@ -140,7 +183,7 @@ void MainWindow::onBookChanged(Book book)
         book.Id = max;
 
         this->_books.Add(book);
-        //saveDataToFile(book);
+
     }
     else
     {
@@ -156,18 +199,9 @@ void MainWindow::onBookChanged(Book book)
     refreshBooksTable();
 }
 
-void MainWindow::saveDataToFile()
-{
 
-    //   QString filename = "Data.csv";
-    //   QFile file(filename);
-    //   if (file.open(QIODevice::WriteOnly | QIODevice::Append))
-    //   {
-    //       QTextStream stream(&file);
-    //       stream << QString::number(book.Id) <<","<< book.Title.c_str()<<"," << book.Author.c_str()<<"," << book.PublishDate.c_str()<<"," << book.PublishCountry.c_str()<<"," << book.IsbnNumber.c_str() << Qt::endl;
-    //       file.close();
-    //   }
-}
+
+
 
 
 void MainWindow::on_DeleteBookBtn_clicked()
@@ -330,6 +364,12 @@ void MainWindow::refreshUsersTable()
 
 /// ENDREGION
 
+
+
+
+
+
+
 void MainWindow::on_BorrowBookBtn_clicked()
 {
     //if(boorowing
@@ -337,3 +377,43 @@ void MainWindow::on_BorrowBookBtn_clicked()
 
     //
 }
+
+
+
+
+
+
+
+
+/// REGION Global
+
+void MainWindow::on_pushButton_clicked()
+{
+       QString filename = "books-data.csv";
+       QString filename2 = "users-data.csv";
+       QString filename3 = "borrowings-data.csv";
+
+       QFile file(filename);
+       if (file.open(QIODevice::WriteOnly | QIODevice::Text))
+       {
+           QTextStream stream(&file);
+           for(List<Book>::iterator it = _books.begin();it != _books.end();++it)
+           {
+               stream << QString::number(it->Id) << ", " << it->Title.c_str()<<"," << it->Author.c_str() <<"," << it->PublishDate.c_str() <<"," << it->PublishCountry.c_str() <<"," << it->IsbnNumber.c_str() << Qt::endl;
+           }
+           file.close();
+       }
+
+       QFile file2(filename2);
+       if (file2.open(QIODevice::WriteOnly | QIODevice::Text))
+       {
+           QTextStream stream(&file2);
+           for(List<User>::iterator i = _users.begin(); i != _users.end(); ++i)
+           {
+               stream << QString::number(i->Id) << "," << i->Name.c_str()<< "," << i->Surname.c_str() << "," << i->Pesel.c_str() <<"," << i->Place.c_str() <<"," << i->HouseFlatNo.c_str() << ", " << i->Street.c_str() << Qt::endl;
+           }
+           file2.close();
+       }
+}
+
+///ENDREGION

@@ -19,7 +19,6 @@ public:
     ~MainWindow();
 
 private slots:
-    //void onRowClicked(const QModelIndex &index);
 
     int howManyBooks();
 
@@ -37,13 +36,13 @@ private slots:
 
     void on_EditBookBtn_clicked();
 
-    void saveDataToFile();
-
     void onBookChanged(Book book);
 
     void onUserChanged(User user);
 
     void on_BorrowBookBtn_clicked();
+
+    void on_pushButton_clicked();
 
 private:
     Ui::MainWindow *ui;
