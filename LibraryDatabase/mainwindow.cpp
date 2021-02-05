@@ -63,6 +63,29 @@ MainWindow::MainWindow(QWidget *parent)
 
 
 
+    QFile file3("borrowings-data.csv");
+    if (file3.open(QIODevice::ReadOnly))
+    {
+        int lineindex = 0;
+        QTextStream in(&file3);
+
+        while (!in.atEnd()) {
+            QString fileLine = in.readLine();
+            QStringList lineToken = fileLine.split(",", QString::SkipEmptyParts);
+            Borrowing borrow;
+            borrow.Id_borrow = lineToken.at(0).toInt();
+            borrow.Id_book = lineToken.at(1).toInt();
+            borrow.borrowDate = lineToken.at(2);
+            borrow.returnDate = lineToken.at(3);
+            borrow.Id_user = lineToken.at(4).toInt();
+            this->_borrows.Add(borrow);
+            lineindex++;
+        }
+        file3.close();
+    }
+
+
+
     refreshUsersTable();
     refreshBooksTable();
     refreshBorrowTable();
@@ -119,6 +142,7 @@ void MainWindow::on_BorrowBookBtn_clicked()
     }
 
     BorrowForm form(tmp->Id,dict,this);
+    //QObject::connect(&BorrowForm, &BorrowForm::borrowAdded,this,&MainWindow::refreshBorrowTable);
     form.exec();
 }
 
@@ -410,7 +434,7 @@ void MainWindow::refreshUsersTable()
 
     for(List<User>::iterator it = _users.begin();it != _users.end();++it){
         QList<QStandardItem*> items;
-        items.append(new QStandardItem(it->sId().toInt()));
+        items.append(new QStandardItem(it->sId()));
         items.append(new QStandardItem(it->Name));
         items.append(new QStandardItem(it->Surname));
         items.append(new QStandardItem(it->Pesel));
@@ -464,6 +488,17 @@ void MainWindow::on_pushButton_clicked()
             stream << QString::number(i->Id) << "," << i->Name<< "," << i->Surname << "," << i->Pesel <<"," << i->Place <<"," << i->HouseFlatNo << ", " << i->Street << Qt::endl;
         }
         file2.close();
+    }
+
+    QFile file3(filename3);
+    if (file3.open(QIODevice::WriteOnly | QIODevice::Text))
+    {
+        QTextStream stream(&file3);
+        for(List<Borrowing>::iterator i = _borrows.begin(); i != _borrows.end(); ++i)
+        {
+            stream << QString::number(i->Id_borrow) << "," << QString::number(i->Id_book) << "," << i->borrowDate << "," << i->returnDate <<"," << QString::number(i->Id_user) << Qt::endl;
+        }
+        file3.close();
     }
 }
 

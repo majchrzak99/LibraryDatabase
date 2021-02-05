@@ -19,9 +19,16 @@ public:
     explicit BorrowForm(int bookId, QMap<int,QString> dict,QWidget *parent = nullptr );
     ~BorrowForm();
 
+private slots:
+    void on_BorrowBtn_clicked();
+
+signals:
+    void borrowAdded(Borrowing borrow);
+
 private:
     Ui::BorrowForm *ui;
     QMap<int,QString> comboSource;
+    Borrowing _borrow;
 };
 
 #endif // BORROWFORM_H

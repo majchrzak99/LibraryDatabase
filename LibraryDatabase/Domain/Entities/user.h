@@ -7,7 +7,7 @@ class User
 {
 public:
     int Id = 0;
-    QString sId(){return (QString)(Id);};
+    QString sId(){return QString::number(Id);};
     QString Name;
     QString Surname;
     QString Pesel;
