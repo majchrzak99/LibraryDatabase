@@ -53,12 +53,15 @@ private slots:
     void onBookChanged(Book book);
 
     void onUserChanged(User user);
+    void onBorrowAdded(Borrowing borrowing);
 
     void on_BorrowBookBtn_clicked();
 
     void on_pushButton_clicked();
 
     void refreshBorrowTable();
+
+    void on_ReturnBookBtn_clicked();
 
 private:
     Ui::MainWindow *ui;

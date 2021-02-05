@@ -107,10 +107,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::on_BorrowBookBtn_clicked()
 {
-    //if(boorowing
-    // User* userToDelete = _users.FirstOrDefault([&](User u){return  u.Id == selectedId;});
 
-    //
     QItemSelectionModel *select = ui->BookTable->selectionModel();
     int selectedId = 0;
 
@@ -142,7 +139,7 @@ void MainWindow::on_BorrowBookBtn_clicked()
     }
 
     BorrowForm form(tmp->Id,dict,this);
-    //QObject::connect(&BorrowForm, &BorrowForm::borrowAdded,this,&MainWindow::refreshBorrowTable);
+    QObject::connect(&form, &BorrowForm::borrowAdded,this,&MainWindow::onBorrowAdded);
     form.exec();
 }
 
@@ -158,11 +155,11 @@ void MainWindow::refreshBorrowTable()
     for(List<Borrowing>::iterator it = _borrows.begin();it != _borrows.end(); ++it)
     {
         QList<QStandardItem*> items;
-        items.append(new QStandardItem(it->Id_borrow));
-        items.append(new QStandardItem(it->Id_book));
+        items.append(new QStandardItem(QString::number(it->Id_borrow)));
+        items.append(new QStandardItem(QString::number(it->Id_book)));
         items.append(new QStandardItem(it->borrowDate));
         items.append(new QStandardItem(it->returnDate));
-        items.append(new QStandardItem(it->Id_user));
+        items.append(new QStandardItem(QString::number(it->Id_user)));
 
         model->appendRow(items);
     }
@@ -172,6 +169,39 @@ void MainWindow::refreshBorrowTable()
     ui->BorrowingTable->setModel(model);
     ui->BorrowingTable->setSelectionBehavior(QAbstractItemView::SelectionBehavior::SelectRows);
     ui->BorrowingTable->setSelectionMode(QAbstractItemView::SelectionMode::SingleSelection);
+}
+
+void MainWindow::onBorrowAdded(Borrowing borrowing)
+{
+    int max = 1;
+    for(List<Borrowing>::iterator it = _borrows.begin(); it != _borrows.end(); ++it){
+        if(it->Id_borrow >= max)
+            max = it->Id_borrow + 1;
+    }
+    borrowing.Id_borrow = max;
+    this->_borrows.Add(borrowing);
+
+    refreshBorrowTable();
+}
+
+void MainWindow::on_ReturnBookBtn_clicked()
+{
+    QItemSelectionModel *select = ui->BorrowingTable->selectionModel();
+    int selectedId = 0;
+
+    if(select->hasSelection())
+    {
+        int rowidx = ui->BorrowingTable->selectionModel()->currentIndex().row();
+
+        selectedId  = ui->BorrowingTable->model()->data(ui->BorrowingTable->model()->index(rowidx,0)).toInt();
+    }
+    Borrowing *tmp = this->_borrows.FirstOrDefault([&](Borrowing b){return b.Id_borrow == selectedId;});
+
+    if(tmp != nullptr)
+    {
+        tmp->returnDate = QDateTime::currentDateTime().toString();
+        refreshBorrowTable();
+    }
 }
 
 
@@ -503,3 +533,4 @@ void MainWindow::on_pushButton_clicked()
 }
 
 ///ENDREGION
+

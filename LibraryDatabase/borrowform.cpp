@@ -22,6 +22,7 @@ BorrowForm::BorrowForm(int bookId, QMap<int,QString> dict,QWidget *parent) :
         this->ui->comboBox->addItem(it.value(),v);
     }
 
+    this->_bookId = bookId;
 }
 
 
@@ -33,14 +34,12 @@ BorrowForm::~BorrowForm()
 
 void BorrowForm::on_BorrowBtn_clicked()
 {
-    qDebug() << "Witam";
-
    //pobieranie danych z formularza
-    _borrow.Id_book = 1;
-    _borrow.Id_book = 1;
-    _borrow.borrowDate = "05.02.2021";
+    _borrow.Id_book = this->_bookId;
+    _borrow.borrowDate = QDateTime::currentDateTime().toString();
     _borrow.returnDate = " ";
-    _borrow.Id_user = 1;
+    int* userId = (int*)this->ui->comboBox->itemData(this->ui->comboBox->currentIndex()).data();
+    _borrow.Id_user = *userId;
 
     emit borrowAdded(_borrow);
     this->close();

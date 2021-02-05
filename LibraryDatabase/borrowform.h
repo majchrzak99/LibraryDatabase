@@ -6,6 +6,7 @@
 #include "Domain/Entities/borrowing.h"
 #include "Domain/Entities/user.h"
 #include <QMap>
+#include <QDateTime>
 namespace Ui {
 class BorrowForm;
 }
@@ -29,6 +30,7 @@ private:
     Ui::BorrowForm *ui;
     QMap<int,QString> comboSource;
     Borrowing _borrow;
+    int _bookId;
 };
 
 #endif // BORROWFORM_H
