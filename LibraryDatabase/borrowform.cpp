@@ -37,7 +37,7 @@ void BorrowForm::on_BorrowBtn_clicked()
    //pobieranie danych z formularza
     _borrow.Id_book = this->_bookId;
     _borrow.borrowDate = QDateTime::currentDateTime().toString();
-    _borrow.returnDate = " ";
+    _borrow.returnDate = "";
     int* userId = (int*)this->ui->comboBox->itemData(this->ui->comboBox->currentIndex()).data();
     _borrow.Id_user = *userId;
 

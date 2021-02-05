@@ -182,6 +182,7 @@ void MainWindow::onBorrowAdded(Borrowing borrowing)
     this->_borrows.Add(borrowing);
 
     refreshBorrowTable();
+    refreshBooksTable();
 }
 
 void MainWindow::on_ReturnBookBtn_clicked()
@@ -201,6 +202,7 @@ void MainWindow::on_ReturnBookBtn_clicked()
     {
         tmp->returnDate = QDateTime::currentDateTime().toString();
         refreshBorrowTable();
+        refreshBooksTable();
     }
 }
 
@@ -235,7 +237,7 @@ void MainWindow::refreshBooksTable()
 
     for(List<Book>::iterator it = _books.begin();it != _books.end();++it)
     {
-        Borrowing *borrowing = this->_borrows.FirstOrDefault([&](Borrowing b){return b.Id_book == it->Id && b.returnDate.isEmpty();});
+        Borrowing *borrowing = this->_borrows.FirstOrDefault([&](Borrowing b){return b.Id_book == it->Id && (b.returnDate.isNull() || b.returnDate.isEmpty());});
 
         model->setData(model->index(i, 0, QModelIndex()), it->Id);
         model->setData(model->index(i, 1, QModelIndex()), it->Title);
